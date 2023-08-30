@@ -45,7 +45,37 @@ This research studies the best practises for the application of Mahalanobis dist
 \mathcal{S}_{\text {MBM, branch-b}} = \sum_{\ell \in L_b} \frac{d_{\mathcal{M}}^\ell (\mathbf{x}) - \mu_b^\ell}{\sigma_b^\ell}
 ```
 
-### 2. Summary of repository
+### 2. Requirements
+ 
+#### Installation requirements
+
+
+#### Data
+
+
+### 3. Running code
+
+#### Training models
+
+
 
 #### Creating synthetic artefacts
-This repository introduces 
+This repository contains a collection of classes (under the name RandomErasing) which enable the creation of synthetic artefacts to images. This tool is designed to integrate into the torchvision transforms library, making it easy to augment your image datasets with synthetic artifacts. These classes can be used to generate synthetic artefacts of various shapes and textures:
+
+
+
+I hope this becomes a useful tool for studying how neural networks interact with different OOD artefacts, as a means of improving OOD detection methods.
+
+
+#### Applying OOD detection
+
+##### Application of Mahalanobis score and MBM
+
+### 4. Conclusion and acknowlegments
+
+
+### 5. License
+
+Copyright (c) 2023, Harry Anthony
+
+
