@@ -2,7 +2,7 @@
 
 ### :newspaper: News
 
-4 August 2023:
+30 August 2023:
 * Code will be released shortly.
 
 
