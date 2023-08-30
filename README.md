@@ -2,8 +2,8 @@
 
 ### :newspaper: News
 
-4 August 2023:
-* Code will be released shortly.
+30 August 2023:
+* Paper will be added after publication.
 
 
 ### Introduction
@@ -36,4 +36,10 @@ The Mahalanobis score is defined as the minimum Mahalanobis distance between the
 where the negative sign is used to stay consistent with the convention of having a higher scoring function for ID than OOD inputs. OOD detection can be viewed as a binary classification problem, labelling an input $\mathbf{x}$ as OOD when the scoring function $\mathcal{S}(\mathbf{x},f)$ is below a threshold $\lambda$, and ID if it is above. Such a scoring function should identify if the input is from a different distribution to $\mathcal{D}_{\text {train}}$. 
 ```math
 G_{\lambda}(\mathbf{x} , f)= \begin{cases}\text { OOD } & \text { if } \mathcal{S}(\mathbf{x},f) \leq \lambda \\ \text { ID } & \text { if } \mathcal{S}(\mathbf{x},f) > \lambda \end{cases}
+```
+
+
+This research studies the best practises for the application of Mahalanobis distance for OOD detection. Our results in [1] highlight that different OOD artefacts are optimally detected at different depths of the network, which motivates using multiple OOD detectors operating at different depths of a network. To study this further, the network was divided into sections, split by successive downsampling operations, which we refer to as branches. The Mahalanobis scores measured after every module in a branch $l \in L_b$, where $L_b$ is the set of modules in branch b, is added together to produce a scoring function at each branch of the network. Before the summation, each the Mahalanobis scores after every module are normalised using the means and standard deviatations of the distances of the training data (see [1] for details). 
+```math
+\mathcal{S}_{MBM, branch b} = \sum_{l \in L_b} \frac{d_{\mathcal{M}}^\ell (\mathbf{x}) - \mu_B^\ell)}{\sigma_b^\ell}
 ```
