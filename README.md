@@ -19,9 +19,13 @@ I hope this work will insire future works into OOD detection for medical image a
 [1] : Paper will be added after publication.
 
 
-###Table of Contents
-* [1. Method overview](1#-method-overview)
+### Table of Contents
+* [1. Method overview](#1-method-overview)
 
 ### 1. Method overview
-An out-of-distribution (OOD) detection method which has gained a lot of research interest is measuing the distance of a test input to the training data in the network's latent space. The distance metric used is typically Mahalanobis distance,
+An out-of-distribution (OOD) detection method which has gained a lot of research interest is measuing the distance of a test input to the training data in the network's latent space. The distance metric used is typically Mahalanobis distance. Using a feature extractor $\mathcal{F}$ (which is typically a section of the DNN), the feature maps for every layer can be extracted 
+
+
+
+
 
