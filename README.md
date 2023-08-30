@@ -2,7 +2,7 @@
 
 ### :newspaper: News
 
-30 August 2023:
+4 August 2023:
 * Code will be released shortly.
 
 
@@ -25,7 +25,15 @@ I hope this work will insire future works into OOD detection for medical image a
 ### 1. Method overview
 An out-of-distribution (OOD) detection method which has gained a lot of research interest is measuing the distance of a test input to the training data in the network's latent space. The distance metric used is typically Mahalanobis distance. Using a feature extractor $\mathcal{F}$ (which is typically a section of the DNN), the feature maps for every layer can be extracted $h(\mathbf{x}) \in \mathbb{R}^{D \times D \times M}$, where the maps have size $D \times D$ with $M$ channels. The means of these feature maps can be used to define an embedding vector $\mathbf{z}(\mathbf{x}) \in \mathbb{R}^{M} = \frac{1}{D^2} \sum_D \sum_D \mathbf{h} (\mathbf{x})$. The mean $\mathbf{\mu_y}$ and covariance matrix $\Sigma_y$ of each class in the training data $(\mathbf{x},y) \sim \mathcal{D}_{\text {train}}$.
 
-The Mahalanobis distance between the vector $\mathbf{z}(\mathbf{x}^{\*})$ of a test data point $\mathbf{x}^{\*}$ and the training data of class $y$ can be calculated as a sum over M dimensions. The Mahalanobis score $d_{\mathcal{M}}$ is defined as the minimum Mahalanobis distance between the test data point and the class centroids of the training data,
+The Mahalanobis distance $d_{\mathcal{M}_y}$ between the vector $\mathbf{z}(\mathbf{x}^\*)$ of a test data point $\mathbf{x}^\*$ and the training data of class $y$ can be calculated as a sum over M dimensions. 
 ```math
 d_{\mathcal{M}_y}(\mathbf{x}^*) = \sum_{i=1}^M ( \mathbf{z}(\mathbf{x^*}) - \mathbf{\mu_y}) \Sigma_y^{-1}  ( \mathbf{z}(\mathbf{x^*}) - \mathbf{\mu_y})
+```
+The Mahalanobis score $d_{\mathcal{M}}$ is defined as the minimum Mahalanobis distance between the test data point and the class centroids of the training data, which can be used as an OOD scoring function.
+```math
+d_{\mathcal{M}}(\mathbf{x}^*) = - \min_{y \in \mathcal{Y}} \{ d_{\mathcal{M}_y}(\mathbf{x}^*) \}
+```
+where the negative sign is used to stay consistent with the convention of having a higher scoring function for ID than OOD inputs.
+```math
+G_{\lambda}(\mathbf{x} , f)= \begin{cases}\text { OOD } & \text { if } \mathcal{S}(\mathbf{x},f) \leq \lambda \\ \text { ID } & \text { if } \mathcal{S}(\mathbf{x},f) > \lambda \end{cases}
 ```
