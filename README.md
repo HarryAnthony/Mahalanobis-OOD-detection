@@ -8,7 +8,7 @@
 
 ### Introduction
 
-<img src="figures/manual_annotations_jpg" width="100" height="100" />
+<img src="figures/manual_annotations_jpg.jpg" width="100" height="100" />
 
 ![](figures/manual_annotations_jpg.jpg) 
 
