@@ -2,14 +2,19 @@
 
 ### :newspaper: Updates
 
-30 August 2023:
-* Paper will be added after publication.
-
+9 September 2023:
+* Pre-print of the paper is now available on Arxiv, which can be found here [1].
 
 ### Introduction
+This repository provides several contributions:
+*  A collection of out-of-distribution (OOD) detection methods that can be applied to pre-trained neural networks, including Mahalanobis distance-based OOD detectors at different depths of the network - studied in the work [1].
+*  Manual annotations for ~50% of the CheXpert database, labelling if an X-ray contains a pacemaker or no support device. We hope this will be a value OOD detection benchmark for the community. 
+
 
 <img src="figures/manual_annotations_jpg.jpg" width="725" height="400" />
 
+
+Contained within this repository is the code that corresponds with the paper [1]. 
 
 This repository contains code for applying Mahalanobis distance score OOD detection on a pre-trained deep neural network trained on a specific task of interest (i.e. disease classification), proposed in [1]. This respository also contains a manually annotated labels for the CheXpert dataset, labelling if an image contains a pacemaker device or no support devices, a valuable OOD benchmark for the community. This code implements a pipeline for loading the CheXpert dataset, dividing it into ID and OOD sub-sets, and applying a handful of _post-hoc_ OOD detection methods, including the Mahalanobis distance based method described in [1]. I hope this work will insire future works into OOD detection for medical image analysis. If these ideas, code or dataset helped influence your research, please cite the following paper (bibtex given at bottom of readme).
 
@@ -20,7 +25,7 @@ This repository contains code for applying Mahalanobis distance score OOD detect
 * [1. Method overview](#1-method-overview)
 * [2. Requirements](#2-requirements)
 * [3. Usage Instructions](#3-usage-instructions)
-* [4. Conclusion, citation and acknowlegments](#4-conclusion,-citation-and-acknowlegments)
+* [4. Conclusion, citation and acknowlegments](#4-conclusion-citation-and-acknowlegments)
 * [5. License](#5-license)
 
 
