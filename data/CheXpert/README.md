@@ -16,6 +16,6 @@ pacemaker_data =  dataset['Path'].isin(pacemaker_list)]
 I hope that this will become a useful baseline  for OOD detection (for example, training a model on images with no support devices, and using the pacemaker dataset as an OOD test set). If you use these datasets in your research, please cite this work.
 
 
-![](figures/summary_of_manual_annotations_jpg.jpg)
+![](../figures/summary_of_manual_annotations_jpg.jpg)
 **Figure 3**: Visualisation of the four different labels used when labelling the CheXpert dataset, which are available in the _data_ directory.
 
