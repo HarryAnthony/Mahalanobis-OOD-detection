@@ -2,23 +2,35 @@
 
 ### :newspaper: Updates
 
-30 August 2023:
-* Paper will be added after publication.
-
+9 September 2023:
+* Pre-print of the paper is now available on Arxiv, which can be found here [1].
 
 ### Introduction
+This repository provides several contributions:
+*  A collection of out-of-distribution (OOD) detection methods that can be applied to pre-trained neural networks, including Mahalanobis distance-based OOD detectors at different depths of the network - studied in the work [1].
+*  Manual annotations for ~50% of the CheXpert database, labelling if a frontal X-ray scan contains a pacemaker or no support device (labels for 100% of the dataset incoming). I hope this will be a value OOD detection benchmark for the community. 
 
-This repository contains code for applying Mahalanobis distance score OOD detection on a pre-trained deep neural network trained on a specific task of interest (i.e. disease classification), proposed in [1]. This respository also contains a manually annotated labels for the CheXpert dataset, labelling if an image contains a pacemaker device or no support devices, a valuable OOD benchmark for the community. This code implements a pipeline for loading the CheXpert dataset, dividing it into ID and OOD sub-sets, and applying a handful of _post-hoc_ OOD detection methods, including the Mahalanobis distance based method described in [1]. I hope this work will insire future works into OOD detection for medical image analysis. If these ideas, code or dataset helped influence your research, please cite the following paper (bibtex given at bottom of readme).
 
-[1] : Paper will be added after publication.
+<img src="figures/manual_annotations_jpg.jpg" width="725" height="400" />
+
+
+Contained within this repository is the code that corresponds with the paper [1]. The work studies OOD detection methods that can be applied on pre-trained deep neural networks which are trained on a specific task of interest (i.e disease classifcation) - known as _post-hoc_ OOD detection methods. This code also enables analysis into how the performance of Mahalanobis distance-based OOD detection changes based on factors such as where the features are extracted in the network or the form of the OOD artefact. The code can be used to demonstrate the performance of using multiple Mahalanobis distance-based detectors at different depths of the network (multi-branch Mahalanobis), which is studied in paper [1].  This code implements a pipeline for loading the CheXpert dataset, dividing it into ID and OOD sub-sets, and applying _post-hoc_ OOD detection methods. Included in the code is a class of methods for adding synthetic artefacts to images, enabling us to study how the detectability of different OOD artefacts. Moreover, the code uses the manual annotations to demonstrate how a real-world OOD task (train on X-rays with no support devices, use pacemaker X-rays as OOD test cases) can be studied with these methods. I hope this work will inspire future works into OOD detection for medical image analysis. If these ideas, code or dataset helped influence your research, please cite the following paper (bibtex given at bottom of readme).
+
+[1] **Harry Anthony**, Konstantinos Kamnitsas “[On the use of Mahalanobis distance for out-of-distribution detection with neural networks for medical imaging](https://arxiv.org/abs/2309.01488)”, *UNSURE 2023 workshop at MICCAI 2023*.
 
 
 ### Table of Contents
 * [1. Method overview](#1-method-overview)
 * [2. Requirements](#2-requirements)
 * [3. Usage Instructions](#3-usage-instructions)
-* [4. Conclusion, citation and acknowlegments](#4-conclusion,-citation-and-acknowlegments)
+	* [a. Training models](#a-training-models)
+	* [b. Accessing manual annotations for CheXpert](#b-accessing-manual-annotations-for-chexpert)
+	* [c. Creating synthetic artefacts](#c-creating-synthetic-artefacts)
+	* [d. Applying OOD detection](#d-applying-ood-detection)
+* [4. Citation](#4-citation)
+* [5. Acknowledgements](#5-acknowledgements)
 * [5. License](#5-license)
+
 
 
 ### 1. Method overview
@@ -52,7 +64,7 @@ This research studies the best practises for the application of Mahalanobis dist
 
 ### 2. Requirements
  
-#### a) Installation requirements
+#### a. Installation requirements
 The system requires the following (latest version tested):
 - [Python](https://www.python.org/downloads/): Developed using Python 3 (3.9.12).
 - [numpy](http://www.numpy.org/) : Package for analysing and using arrays (1.24.2).
@@ -68,14 +80,14 @@ The project can be cloned using
 $ git clone https://github.com/HarryAnthony/private_mahal_score/
 ```
 
-#### b) Data requirements
+#### b. Data requirements
 This research was completed on the CheXpert dataset [2], a multi-label dataset of chest x-rays. Therefore, to run the example code please download the `CheXpert-v1.0-small` dataset and place in the folder `dataset`. The default settings used for th datasets are described in the `config/chexpert.py` file.
 
 
 
 ### 3. Usage instructions
 
-#### a) Training models
+#### a. Training models
 Training models using the settings that were used for our project can be achied using the following code:
 ```
 python3 training.py [-h] [--setting SETTING] [--lr LR] [--net_type NET_TYPE] [--depth DEPTH] [--widen_factor WIDEN_FACTOR] [--dropout DROPOUT] [--act_func_dropout ACT_FUNC_DROPOUT]
@@ -92,8 +104,8 @@ The arguments of the file allow for strong autonomy in controlling the how the m
 If the ` --setting` --setting argument is not one of the above, then the arguments will be used to select the data to train the model. The configurations for each dataset are given in the `config/` directory. The configurations of each of the models that are trained using this file are saved to the file `checkpoint/Model_list.csv`.
 
 
-#### b) Accessing manual annotations for CheXpert
-A significant contribution of this paper was manually annotation of the lateral X-ray scans of the CheXpert dataset into four categories, given by four textfiles: 
+#### b. Accessing manual annotations for CheXpert
+A significant contribution of this paper was manually annotation of ~50% of the lateral X-ray scans of the CheXpert dataset (labels of 100% incoming) into four categories, given by four textfiles: 
 * `pacemaker.txt` : X-ray scans with a visible pacemaker device.
 * `no_support_device.txt` : X-ray scans with a visible support devices, using the definition for support devices given by CheXpert [2].
 * `support_devices.txt` : X-ray scans with a visible support device, but not including a visible pacemaker device.
@@ -107,15 +119,18 @@ pacemaker_data =  dataset['Path'].isin(pacemaker_list)]
 I hope that this will become a useful baseline  for OOD detection (for example, training a model on images with no support devices, and using the pacemaker dataset as an OOD test set). If you use these datasets in your research, please cite this work.
 
 
+![](figures/summary_of_manual_annotations_jpg.jpg)
+**Figure 3**: Visualisation of the four different labels used when labelling the CheXpert dataset, which are available in the _data_ directory.
 
-#### c) Creating synthetic artefacts
-This repository contains a collection of classes (`Image_augmentations.py`) which enable the creation of synthetic artefacts to images. This tool is designed to integrate into the torchvision transforms library, making it easy to augment your image datasets with synthetic artifacts. These classes can be used to generate synthetic artefacts of various shapes and textures:
+
+#### c. Creating synthetic artefacts
+This repository contains a collection of classes (`make_synthetic_artefacts.py`) which enable the creation of synthetic artefacts to images. This tool is designed to integrate into the torchvision transforms library, making it easy to augment your image datasets with synthetic artifacts. These classes can be used to generate synthetic artefacts of various shapes and textures:
 
 
 
 ![](figures/Image_augmentations_jpg.jpg) 
 
-**Figure 3**: Visualisation of the different shapes and textures  of synthetic artefactswhich can be created with `Image_augmentations.py`.
+**Figure 4**: Visualisation of the different shapes and textures of synthetic artefactswhich can be created with `Image_augmentations.py`.
 
 
 
@@ -130,10 +145,10 @@ transformations = T.Compose([T.Resize((224,224)),
 It can also be used in conjunction with the function `modify_transforms` which enables the addition of synthetic artefact transformations to the list of transformations for a dataloader without the need for redefinition. I hope this becomes a useful tool for studying how neural networks interact with different OOD artefacts, as a means of improving OOD detection methods.
 
 
-#### d) Applying OOD detection
-Given the seed of the experiment, saved in the file `checkpoint/Model_list.csv`, OOD detection methods can be applied using the file:
+#### d. Applying OOD detection
+Given the seed of the experiment, saved in the file `checkpoint/model_list.csv`, OOD detection methods can be applied using the file:
 ```
-python 3 main.py [-h] [--method METHOD] [--cuda_device CUDA_DEVICE] [--batch_size BATCH_SIZE] [--verbose VERBOSE] [--seed SEED] [--ood_class_selections OOD_CLASS_SELECTIONS]
+python 3 evaluate_OOD_detection_method.py [-h] [--method METHOD] [--cuda_device CUDA_DEVICE] [--batch_size BATCH_SIZE] [--verbose VERBOSE] [--seed SEED] [--ood_class_selections OOD_CLASS_SELECTIONS]
                [--ood_demographic_selections OOD_DEMOGRAPHIC_SELECTIONS] [--ood_dataset_selections OOD_DATASET_SELECTIONS] [--ood_train_val_test_split_criteria OOD_TRAIN_VAL_TEST_SPLIT_CRITERIA]
                [--ood_type OOD_TYPE] [--ood_dataset OOD_DATASET] [--filename FILENAME] [--temperature TEMPERATURE] [--noiseMagnitude NOISEMAGNITUDE]
                [--MCDP_samples MCDP_SAMPLES] [--deep_ensemble_seed_list DEEP_ENSEMBLE_SEED_LIST] [--save_results SAVE_RESULTS] [--plot_metric PLOT_METRIC] [--return_metrics RETURN_METRICS]
@@ -160,11 +175,24 @@ Using the argument `--method Mahalanobis` will calculate the Mahalanobis score a
 If more than one layer is selected, the argument `--feature_combination` decides whether to keep the scoring function of each module seperate and calculate an individual AUROC and AUCPR for each layer (`--feature_combination False`) or whether to combine the distances of the layers selected to have one scoring function for OOD detection (`--feature_combination True`).
 Using the arguement `--method MBM` will select the modules for each *branch* (see sec.1) and will combine them using feature combination. Note that MBM is currently only avaliable for models ResNet18 and VGG16_bn, but additional models can be added by extending the *mahalanobis_module_dict* in `methods/mahalanobis.py`.
 
-### 4. Conclusion, citation and acknowlegments
-I hope this work is useful for further understanding how neural networks behave when encountering an OOD input. If you found this work useful or have any comments, do let me know.  Please emaul me your feedback or any issues to: **harry.anthony@eng.ox.ac.uk**.
 
-Citation will be added when paper is published.
+### 4. Citation
+I hope this work is useful for further understanding how neural networks behave when encountering an OOD input. If you found this work useful or have any comments, do let me know.  Please email me your feedback or any issues to: **harry.anthony@eng.ox.ac.uk**.
 
+When citing this research, please use the bibTex:
+```
+@misc{anthony2023use,
+      title={On the use of Mahalanobis distance for out-of-distribution detection with neural networks for medical imaging}, 
+      author={Harry Anthony and Konstantinos Kamnitsas},
+      year={2023},
+      eprint={2309.01488},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
+
+
+### 5. Acknowlegments
 I would like to acknowlegde the work done by Christoph Berger [3], as their project code was very helpful for my project.
 
 [2]: Irvin, J., Rajpurkar, P., Ko, M., Yu, Y., et al.: Chexpert: A large chest radiograph dataset with uncertainty labels and expert comparison. In: Proceedings of the AAAI conference on artificial intelligence. vol. 33, pp. 590–597 (2019)

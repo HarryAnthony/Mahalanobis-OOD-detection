@@ -77,6 +77,7 @@ parser.add_argument('--synth_font_family', default='sans-serif', type=str,
 #Arguments for selecting the OOD dataset
 parser.add_argument('--ood_dataset', default='SHVM', type=str,
                     help='Name of dataset to be used for ood.')
+#Arguments for OOD detection methods
 parser.add_argument('--filename', default='practise', type=str,
                     help='Name of dataset to be used for ood.')
 parser.add_argument('--temperature', '-T', default='1', type=float,
