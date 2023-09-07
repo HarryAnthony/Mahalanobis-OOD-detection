@@ -7,7 +7,7 @@
 
 ### Introduction
 This repository provides several contributions:
-*  A collection of out-of-distribution (OOD) detection methods that can be applied to pre-trained neural networks, including Mahalanobis distance-based OOD detectors at different depths of the network - studied in the work [1].
+*  A collection of out-of-distribution (OOD) detection methods that can be applied to pre-trained neural networks, including Mahalanobis distance-based OOD detectors at different depths of the network - studied in our work [1].
 *  Manual annotations for ~50% of the CheXpert database, labelling if a frontal X-ray scan contains a pacemaker or no support device (labels for 100% of the dataset incoming). I hope this will be a value OOD detection benchmark for the community. 
 
 
@@ -24,7 +24,7 @@ Contained within this repository is the code that corresponds with the paper [1]
 * [2. Requirements](#2-requirements)
 * [3. Usage Instructions](#3-usage-instructions)
 	* [a. Training models](#a-training-models)
-	* [b. Accessing manual annotations for CheXpert](#b-accessing-manual-annotations-for-chexpert)
+	* [b. Manual annotations for CheXpert](#b-manual-annotations-for-chexpert)
 	* [c. Creating synthetic artefacts](#c-creating-synthetic-artefacts)
 	* [d. Applying OOD detection](#d-applying-ood-detection)
 * [4. Citation](#4-citation)
@@ -104,20 +104,25 @@ The arguments of the file allow for strong autonomy in controlling the how the m
 If the ` --setting` --setting argument is not one of the above, then the arguments will be used to select the data to train the model. The configurations for each dataset are given in the `config/` directory. The configurations of each of the models that are trained using this file are saved to the file `checkpoint/Model_list.csv`.
 
 
-#### b. Accessing manual annotations for CheXpert
-A significant contribution of this paper was manually annotation of ~50% of the lateral X-ray scans of the CheXpert dataset (labels of 100% incoming) into four categories, given by four textfiles: 
+#### b. Manual annotations for CheXpert
+In this research, we manually annotated ~50% of the frontal X-rays in the CheXpert dataset (labels for 100% coming soon!) into four categories: *No Support Devices*, *Pacemaker*, *Other Support Device* (no pacemaker), *Uncertain*. The aim was to create a clean and reliable OOD evaluation benchmark for medical imaging: The *No Support Device* class is a set of images that can be used as In-Distribution set for training a model, while the images of *Pacemaker* class, which contain a visually-distinct image pattern, can be used as the OOD test set, to analyse performance of an OOD detection method, as used in our paper. As a contribution of this work, we make these annotations publicly available here, and hope they will be useful for assessment of OOD methods in future works by the community. Please cite this work if you use this data in your research.
+
+The annotations are given by the following textfiles: 
 * `pacemaker.txt` : X-ray scans with a visible pacemaker device.
-* `no_support_device.txt` : X-ray scans with a visible support devices, using the definition for support devices given by CheXpert [2].
-* `support_devices.txt` : X-ray scans with a visible support device, but not including a visible pacemaker device.
+* `other_support_devices.txt` : X-ray scans with a visible support device (lines, PICC, tube, valve, catheter, hardware, arthroplast, plate, screw, cannula, coil, mediport) visibly obscuring the chest, but not including a visible pacemaker device.
+* `no_support_device.txt` : X-ray scans without any visible support device (nor pacemaker).
 * `uncertain.txt` : Low-quality X-ray scans in which it is difficult to dissern which of the above categories the image belongs.
-These manual annotations were done because CheXpert's annotations are *sub-optimal*. These files contain the `Path` to the image, which means selections on the dataset can be used in the following way:
+
+These files contain the `Path` to the image, which means selections on the dataset can be used in the following way:
 ```
 pacemaker_list = np.loadtxt("pacemaker.txt",dtype=str)
 pacemaker_list = ['CheXpert-v1.0-small/'+str(element) for element in pacemaker_list ]
 pacemaker_data =  dataset['Path'].isin(pacemaker_list)]
 ```
-I hope that this will become a useful baseline  for OOD detection (for example, training a model on images with no support devices, and using the pacemaker dataset as an OOD test set). If you use these datasets in your research, please cite this work.
 
+Creating this set annotations was necessary to create a reliable OOD evaluation because we found the original class *Support-Devices* of CheXpert contained some label noise (as it's made by an NLP model) and contained heterogeneous set of devices (as opposed to our *Pacemaker* class), which complicated analysis of OOD patterns. 
+
+**DISCLAIMER**: These annotations were made by author Harry Anthony (PhD candidate in Engineering Science) based on visual inspection, and were **not validated by medical experts**. This data is for **research purposes only**.
 
 ![](figures/summary_of_manual_annotations_jpg.jpg)
 **Figure 3**: Visualisation of the four different labels used when labelling the CheXpert dataset, which are available in the _data_ directory.
