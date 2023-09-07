@@ -135,7 +135,7 @@ This repository contains a collection of classes (`make_synthetic_artefacts.py`)
 
 ![](figures/Image_augmentations_jpg.jpg) 
 
-**Figure 4**: Visualisation of the different shapes and textures of synthetic artefactswhich can be created with `Image_augmentations.py`.
+**Figure 4**: Visualisation of the different shapes and textures of synthetic artefactswhich can be created with `make_synthetic_artefacts.py`.
 
 
 
