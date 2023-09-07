@@ -8,7 +8,7 @@
 ### Introduction
 This repository provides several contributions:
 *  A collection of out-of-distribution (OOD) detection methods that can be applied to pre-trained neural networks, including Mahalanobis distance-based OOD detectors at different depths of the network - studied in our work [1].
-*  Manual annotations for ~50% of the CheXpert database, labelling if a frontal X-ray scan contains a pacemaker or no support device (labels for 100% of the dataset incoming). I hope this will be a value OOD detection benchmark for the community. 
+*  Manual annotations for ~50% of the CheXpert database, labelling if a frontal X-ray scan contains a pacemaker or no support device (labels for 100% of the dataset coming soon). I hope this will be a value OOD detection benchmark for the community. 
 
 
 <img src="figures/manual_annotations_jpg.jpg" width="725" height="400" />
@@ -120,7 +120,7 @@ pacemaker_list = ['CheXpert-v1.0-small/'+str(element) for element in pacemaker_l
 pacemaker_data =  dataset['Path'].isin(pacemaker_list)]
 ```
 
-Creating this set annotations was necessary to create a reliable OOD evaluation because we found the original class *Support-Devices* of CheXpert contained some label noise (as it's made by an NLP model) and contained heterogeneous set of devices (as opposed to our *Pacemaker* class), which complicated analysis of OOD patterns. 
+Creating this set annotations was necessary to create a reliable OOD evaluation because we found the original class *Support-Devices* of CheXpert contained some label noise (as it's made by an NLP model) and contained heterogeneous set of devices (as opposed to our *Pacemaker* class), which complicated analysis of OOD patterns. If you find any issues, please let us know so they can be addressed.
 
 **DISCLAIMER**: These annotations were made by author Harry Anthony (PhD candidate in Engineering Science) based on visual inspection, and were **not validated by medical experts**. This data is for **research purposes only**.
 
