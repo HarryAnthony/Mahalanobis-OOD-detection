@@ -28,7 +28,7 @@ Contained within this repository is the code that corresponds with the paper [1]
 	* [c. Creating synthetic artefacts](#c-creating-synthetic-artefacts)
 	* [d. Applying OOD detection](#d-applying-ood-detection)
 * [4. Citation](#4-citation)
-* [5. Acknowledgements][#5-acknowledgements]
+* [5. Acknowledgements](#5-acknowledgements)
 * [5. License](#5-license)
 
 
