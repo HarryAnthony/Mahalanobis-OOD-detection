@@ -192,7 +192,7 @@ When citing this research, please use the bibTex:
 ```
 
 
-### 5. Acknowlegments
+### 5. Acknowledgments
 I would like to acknowlegde the work done by Christoph Berger [3], as their project code was very helpful for my project.
 
 [2]: Irvin, J., Rajpurkar, P., Ko, M., Yu, Y., et al.: Chexpert: A large chest radiograph dataset with uncertainty labels and expert comparison. In: Proceedings of the AAAI conference on artificial intelligence. vol. 33, pp. 590–597 (2019)
