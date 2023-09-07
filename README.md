@@ -27,7 +27,8 @@ Contained within this repository is the code that corresponds with the paper [1]
 	* [b. Accessing manual annotations for CheXpert](#b-accessing-manual-annotations-for-chexpert)
 	* [c. Creating synthetic artefacts](#c-creating-synthetic-artefacts)
 	* [d. Applying OOD detection](#d-applying-ood-detection)
-* [4. Conclusion, citation and acknowlegments](#4-conclusion-citation-and-acknowlegments)
+* [4. Citation](#4-citation)
+* [5. Acknowledgements][#5-acknowledgements]
 * [5. License](#5-license)
 
 
@@ -123,7 +124,7 @@ I hope that this will become a useful baseline  for OOD detection (for example, 
 
 
 #### c. Creating synthetic artefacts
-This repository contains a collection of classes (`Image_augmentations.py`) which enable the creation of synthetic artefacts to images. This tool is designed to integrate into the torchvision transforms library, making it easy to augment your image datasets with synthetic artifacts. These classes can be used to generate synthetic artefacts of various shapes and textures:
+This repository contains a collection of classes (`make_synthetic_artefacts.py`) which enable the creation of synthetic artefacts to images. This tool is designed to integrate into the torchvision transforms library, making it easy to augment your image datasets with synthetic artifacts. These classes can be used to generate synthetic artefacts of various shapes and textures:
 
 
 
@@ -145,9 +146,9 @@ It can also be used in conjunction with the function `modify_transforms` which e
 
 
 #### d. Applying OOD detection
-Given the seed of the experiment, saved in the file `checkpoint/Model_list.csv`, OOD detection methods can be applied using the file:
+Given the seed of the experiment, saved in the file `checkpoint/model_list.csv`, OOD detection methods can be applied using the file:
 ```
-python 3 main.py [-h] [--method METHOD] [--cuda_device CUDA_DEVICE] [--batch_size BATCH_SIZE] [--verbose VERBOSE] [--seed SEED] [--ood_class_selections OOD_CLASS_SELECTIONS]
+python 3 evaluate_OOD_detection_method.py [-h] [--method METHOD] [--cuda_device CUDA_DEVICE] [--batch_size BATCH_SIZE] [--verbose VERBOSE] [--seed SEED] [--ood_class_selections OOD_CLASS_SELECTIONS]
                [--ood_demographic_selections OOD_DEMOGRAPHIC_SELECTIONS] [--ood_dataset_selections OOD_DATASET_SELECTIONS] [--ood_train_val_test_split_criteria OOD_TRAIN_VAL_TEST_SPLIT_CRITERIA]
                [--ood_type OOD_TYPE] [--ood_dataset OOD_DATASET] [--filename FILENAME] [--temperature TEMPERATURE] [--noiseMagnitude NOISEMAGNITUDE]
                [--MCDP_samples MCDP_SAMPLES] [--deep_ensemble_seed_list DEEP_ENSEMBLE_SEED_LIST] [--save_results SAVE_RESULTS] [--plot_metric PLOT_METRIC] [--return_metrics RETURN_METRICS]
@@ -174,11 +175,24 @@ Using the argument `--method Mahalanobis` will calculate the Mahalanobis score a
 If more than one layer is selected, the argument `--feature_combination` decides whether to keep the scoring function of each module seperate and calculate an individual AUROC and AUCPR for each layer (`--feature_combination False`) or whether to combine the distances of the layers selected to have one scoring function for OOD detection (`--feature_combination True`).
 Using the arguement `--method MBM` will select the modules for each *branch* (see sec.1) and will combine them using feature combination. Note that MBM is currently only avaliable for models ResNet18 and VGG16_bn, but additional models can be added by extending the *mahalanobis_module_dict* in `methods/mahalanobis.py`.
 
-### 4. Conclusion, citation and acknowlegments
-I hope this work is useful for further understanding how neural networks behave when encountering an OOD input. If you found this work useful or have any comments, do let me know.  Please emaul me your feedback or any issues to: **harry.anthony@eng.ox.ac.uk**.
 
-Citation will be added when paper is published.
+### 4. Citation
+I hope this work is useful for further understanding how neural networks behave when encountering an OOD input. If you found this work useful or have any comments, do let me know.  Please email me your feedback or any issues to: **harry.anthony@eng.ox.ac.uk**.
 
+When citing this research, please use the bibTex:
+```
+@misc{anthony2023use,
+      title={On the use of Mahalanobis distance for out-of-distribution detection with neural networks for medical imaging}, 
+      author={Harry Anthony and Konstantinos Kamnitsas},
+      year={2023},
+      eprint={2309.01488},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
+
+
+### 5. Acknowlegments
 I would like to acknowlegde the work done by Christoph Berger [3], as their project code was very helpful for my project.
 
 [2]: Irvin, J., Rajpurkar, P., Ko, M., Yu, Y., et al.: Chexpert: A large chest radiograph dataset with uncertainty labels and expert comparison. In: Proceedings of the AAAI conference on artificial intelligence. vol. 33, pp. 590–597 (2019)
