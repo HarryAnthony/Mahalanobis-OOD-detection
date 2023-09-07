@@ -14,7 +14,7 @@ This repository provides several contributions:
 <img src="figures/manual_annotations_jpg.jpg" width="725" height="400" />
 
 
-Contained within this repository is the code that corresponds with the paper [1]. The work studies OOD detection methods that can be applied on pre-trained deep neural networks which are trained on a specific task of interest (i.e disease classifcation) - known as _post-hoc_ OOD detection methods. This code also enables analysis into how the performance of Mahalanobis distance-based OOD detection changes based on factors such as where the features are extracted in the network or the form of the OOD artefact. The code can be used to demonstrate the performance of using multiple Mahalanobis distance-based detectors at different depths of the network (multi-branch Mahalanobis), which is studied in paper [1].  This code implements a pipeline for loading the CheXpert dataset, dividing it into ID and OOD sub-sets, and applying _post-hoc_ OOD detection methods. Included in the code is a class of methods for adding synthetic artefacts to images, enabling us to study how these artefacts impact how detectable they are. Moreover, the code uses the manual annotations to demonstrate how a real-world OOD task (train on X-rays with no support devices, use pacemaker X-rays as OOD test cases) can be studied with these methods. I hope this work will inspire future works into OOD detection for medical image analysis. If these ideas, code or dataset helped influence your research, please cite the following paper (bibtex given at bottom of readme).
+Contained within this repository is the code that corresponds with the paper [1]. The work studies OOD detection methods that can be applied on pre-trained deep neural networks which are trained on a specific task of interest (i.e disease classifcation) - known as _post-hoc_ OOD detection methods. This code also enables analysis into how the performance of Mahalanobis distance-based OOD detection changes based on factors such as where the features are extracted in the network or the form of the OOD artefact. The code can be used to demonstrate the performance of using multiple Mahalanobis distance-based detectors at different depths of the network (multi-branch Mahalanobis), which is studied in paper [1].  This code implements a pipeline for loading the CheXpert dataset, dividing it into ID and OOD sub-sets, and applying _post-hoc_ OOD detection methods. Included in the code is a class of methods for adding synthetic artefacts to images, enabling us to study how the detectability of different OOD artefacts. Moreover, the code uses the manual annotations to demonstrate how a real-world OOD task (train on X-rays with no support devices, use pacemaker X-rays as OOD test cases) can be studied with these methods. I hope this work will inspire future works into OOD detection for medical image analysis. If these ideas, code or dataset helped influence your research, please cite the following paper (bibtex given at bottom of readme).
 
 [1] **Harry Anthony**, Konstantinos Kamnitsas “[On the use of Mahalanobis distance for out-of-distribution detection with neural networks for medical imaging](https://arxiv.org/abs/2309.01488)”, *UNSURE 2023 workshop at MICCAI 2023*.
 
@@ -23,8 +23,13 @@ Contained within this repository is the code that corresponds with the paper [1]
 * [1. Method overview](#1-method-overview)
 * [2. Requirements](#2-requirements)
 * [3. Usage Instructions](#3-usage-instructions)
+* [a. Training models](#a-training-models)
+* [b. Accessing manual annotations for CheXpert](#b-accessing-manual-annotations-for-chexpert)
+* [c. Creating synthetic artefacts](#c-creating-synthetic-artefacts)
+* [d. Applying OOD detection](#d-applying-ood-detection)
 * [4. Conclusion, citation and acknowlegments](#4-conclusion-citation-and-acknowlegments)
 * [5. License](#5-license)
+
 
 
 ### 1. Method overview
@@ -81,7 +86,7 @@ This research was completed on the CheXpert dataset [2], a multi-label dataset o
 
 ### 3. Usage instructions
 
-#### a) Training models
+#### a. Training models
 Training models using the settings that were used for our project can be achied using the following code:
 ```
 python3 training.py [-h] [--setting SETTING] [--lr LR] [--net_type NET_TYPE] [--depth DEPTH] [--widen_factor WIDEN_FACTOR] [--dropout DROPOUT] [--act_func_dropout ACT_FUNC_DROPOUT]
@@ -98,7 +103,7 @@ The arguments of the file allow for strong autonomy in controlling the how the m
 If the ` --setting` --setting argument is not one of the above, then the arguments will be used to select the data to train the model. The configurations for each dataset are given in the `config/` directory. The configurations of each of the models that are trained using this file are saved to the file `checkpoint/Model_list.csv`.
 
 
-#### b) Accessing manual annotations for CheXpert
+#### b. Accessing manual annotations for CheXpert
 A significant contribution of this paper was manually annotation of the lateral X-ray scans of the CheXpert dataset into four categories, given by four textfiles: 
 * `pacemaker.txt` : X-ray scans with a visible pacemaker device.
 * `no_support_device.txt` : X-ray scans with a visible support devices, using the definition for support devices given by CheXpert [2].
@@ -114,7 +119,7 @@ I hope that this will become a useful baseline  for OOD detection (for example, 
 
 
 
-#### c) Creating synthetic artefacts
+#### c. Creating synthetic artefacts
 This repository contains a collection of classes (`Image_augmentations.py`) which enable the creation of synthetic artefacts to images. This tool is designed to integrate into the torchvision transforms library, making it easy to augment your image datasets with synthetic artifacts. These classes can be used to generate synthetic artefacts of various shapes and textures:
 
 
@@ -136,7 +141,7 @@ transformations = T.Compose([T.Resize((224,224)),
 It can also be used in conjunction with the function `modify_transforms` which enables the addition of synthetic artefact transformations to the list of transformations for a dataloader without the need for redefinition. I hope this becomes a useful tool for studying how neural networks interact with different OOD artefacts, as a means of improving OOD detection methods.
 
 
-#### d) Applying OOD detection
+#### d. Applying OOD detection
 Given the seed of the experiment, saved in the file `checkpoint/Model_list.csv`, OOD detection methods can be applied using the file:
 ```
 python 3 main.py [-h] [--method METHOD] [--cuda_device CUDA_DEVICE] [--batch_size BATCH_SIZE] [--verbose VERBOSE] [--seed SEED] [--ood_class_selections OOD_CLASS_SELECTIONS]
