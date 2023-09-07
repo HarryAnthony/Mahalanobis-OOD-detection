@@ -8,7 +8,7 @@
 ### Introduction
 This repository provides several contributions:
 *  A collection of out-of-distribution (OOD) detection methods that can be applied to pre-trained neural networks, including Mahalanobis distance-based OOD detectors at different depths of the network - studied in the work [1].
-*  Manual annotations for ~50% of the CheXpert database, labelling if an X-ray contains a pacemaker or no support device. I hope this will be a value OOD detection benchmark for the community. 
+*  Manual annotations for ~50% of the CheXpert database, labelling if a frontal X-ray scan contains a pacemaker or no support device (labels for 100% of the dataset incoming). I hope this will be a value OOD detection benchmark for the community. 
 
 
 <img src="figures/manual_annotations_jpg.jpg" width="725" height="400" />
@@ -63,7 +63,7 @@ This research studies the best practises for the application of Mahalanobis dist
 
 ### 2. Requirements
  
-#### a) Installation requirements
+#### a. Installation requirements
 The system requires the following (latest version tested):
 - [Python](https://www.python.org/downloads/): Developed using Python 3 (3.9.12).
 - [numpy](http://www.numpy.org/) : Package for analysing and using arrays (1.24.2).
@@ -79,7 +79,7 @@ The project can be cloned using
 $ git clone https://github.com/HarryAnthony/private_mahal_score/
 ```
 
-#### b) Data requirements
+#### b. Data requirements
 This research was completed on the CheXpert dataset [2], a multi-label dataset of chest x-rays. Therefore, to run the example code please download the `CheXpert-v1.0-small` dataset and place in the folder `dataset`. The default settings used for th datasets are described in the `config/chexpert.py` file.
 
 
@@ -104,7 +104,7 @@ If the ` --setting` --setting argument is not one of the above, then the argumen
 
 
 #### b. Accessing manual annotations for CheXpert
-A significant contribution of this paper was manually annotation of the lateral X-ray scans of the CheXpert dataset into four categories, given by four textfiles: 
+A significant contribution of this paper was manually annotation of ~50% of the lateral X-ray scans of the CheXpert dataset (labels of 100% incoming) into four categories, given by four textfiles: 
 * `pacemaker.txt` : X-ray scans with a visible pacemaker device.
 * `no_support_device.txt` : X-ray scans with a visible support devices, using the definition for support devices given by CheXpert [2].
 * `support_devices.txt` : X-ray scans with a visible support device, but not including a visible pacemaker device.
@@ -118,6 +118,9 @@ pacemaker_data =  dataset['Path'].isin(pacemaker_list)]
 I hope that this will become a useful baseline  for OOD detection (for example, training a model on images with no support devices, and using the pacemaker dataset as an OOD test set). If you use these datasets in your research, please cite this work.
 
 
+![](figures/summary_of_manual_annotations_jpg.jpg)
+**Figure 3**: Visualisation of the four different labels used when labelling the CheXpert dataset, which are available in the _data_ directory.
+
 
 #### c. Creating synthetic artefacts
 This repository contains a collection of classes (`Image_augmentations.py`) which enable the creation of synthetic artefacts to images. This tool is designed to integrate into the torchvision transforms library, making it easy to augment your image datasets with synthetic artifacts. These classes can be used to generate synthetic artefacts of various shapes and textures:
@@ -126,7 +129,7 @@ This repository contains a collection of classes (`Image_augmentations.py`) whic
 
 ![](figures/Image_augmentations_jpg.jpg) 
 
-**Figure 3**: Visualisation of the different shapes and textures  of synthetic artefactswhich can be created with `Image_augmentations.py`.
+**Figure 4**: Visualisation of the different shapes and textures of synthetic artefactswhich can be created with `Image_augmentations.py`.
 
 
 
