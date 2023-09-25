@@ -1,9 +1,10 @@
 import torch
 import numpy as np 
 from torch.autograd import Variable
-from util.general_utils import print_progress
-from util.evaluate_network_utils import softmax, load_net
 import ast
+from source.util.general_utils import print_progress
+from source.util.evaluate_network_utils import softmax, load_net
+
 
 def get_ensemble_members(net,seed_list,net_dict,**kwargs):
     """

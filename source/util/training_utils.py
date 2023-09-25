@@ -6,7 +6,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from models.wide_resnet import Wide_ResNet
+from source.models.wide_resnet import Wide_ResNet
 import torch.optim as optim
 import torch.optim.lr_scheduler as lr_scheduler
 from torchvision.models import resnet18, efficientnet_v2_s, vgg11, vgg16_bn, resnet34, resnet50

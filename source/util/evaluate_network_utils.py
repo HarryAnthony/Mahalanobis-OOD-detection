@@ -14,12 +14,12 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import csv
 import ast
-from torchvision.models import resnet18, vgg11, vgg16_bn, resnet34, resnet50
-from models.wide_resnet import Wide_ResNet
-from util.training_utils import set_activation_function, add_dropout_network_architechture
-from torch.nn import functional as F
-from util.general_utils import print_progress
 from itertools import combinations
+from torch.nn import functional as F
+from torchvision.models import resnet18, vgg11, vgg16_bn, resnet34, resnet50
+from source.models.wide_resnet import Wide_ResNet
+from source.util.training_utils import set_activation_function, add_dropout_network_architechture
+from source.util.general_utils import print_progress
 
 
 def check_net_exists(seed, verbose=True, get_output=False):
@@ -44,7 +44,7 @@ def check_net_exists(seed, verbose=True, get_output=False):
     -------
     None if get_output is False, otherwise returns a dictionary containing the net information.
     """
-    model_list = pd.read_csv('../outputs/saved_models/model_list.csv')  # Get list of nets
+    model_list = pd.read_csv('outputs/saved_models/model_list.csv')  # Get list of nets
 
     matching_models = model_list[model_list['Seed'] == int(seed)]
     if len(matching_models) == 0:
@@ -118,10 +118,10 @@ def load_net(seed,verbose=True,use_cuda=True):
 
     #Get configuration for given datasets
     if net_info['Model database'] == 'CheXpert' or net_info['Model database'] == 'cheXpert':
-        from config import chexpert as cf_chexpert
+        from source.config import chexpert as cf_chexpert
         cf = cf_chexpert
     elif net_info['Model database'] == 'cifar10':
-        from config import cifar10 as cf_cifar10
+        from source.config import cifar10 as cf_cifar10
         cf = cf_cifar10
 
     #Get the classes in and out
@@ -168,11 +168,11 @@ def load_net(seed,verbose=True,use_cuda=True):
     net_dict['pathname'] = net_info['Model pathname']
 
     # Model setup
-    assert os.path.isdir('../outputs/saved_models'), 'Error: No saved_models directory found!'
+    assert os.path.isdir('outputs/saved_models'), 'Error: No saved_models directory found!'
     if use_cuda:
-        checkpoint = torch.load('../outputs/saved_models/'+net_info['Model database'].lower()+'/'+net_info['Model pathname']+'.pth')
+        checkpoint = torch.load('outputs/saved_models/'+net_info['Model database'].lower()+'/'+net_info['Model pathname']+'.pth')
     else:
-        checkpoint = torch.load('../outputs/saved_models/'+net_info['Model database'].lower()+'/'+net_info['Model pathname']+'.pth',map_location='cpu')
+        checkpoint = torch.load('outputs/saved_models/'+net_info['Model database'].lower()+'/'+net_info['Model pathname']+'.pth',map_location='cpu')
     #Apply parameters and activation function to the network
     params = {}
     for k_old in checkpoint.keys():
@@ -245,7 +245,7 @@ def evaluate_ood_detection_method(method,net,idloader,oodloader,return_metrics=F
     AUCPR : float
         The AUCPR (if return metrics is True).
     """
-    from methods import mcp, odin, mcdp, deepensemble, mahalanobis
+    from source.methods import mcp, odin, mcdp, deepensemble, mahalanobis
 
     OOD_detection_dict = {'MCP': {'function': mcp.evaluate, 'name': ['MCP']},
                            'ODIN': {'function': odin.evaluate, 'name': ['ODIN']},

@@ -73,7 +73,7 @@ def select_pacemaker_images(dataset,criteria=['remove all images without pacemak
     dataset: dict
         A dictionary containing the dataset information
     """
-    pacemaker_list = np.loadtxt("../data/CheXpert/manual_annotations/pacemaker.txt",dtype=str)
+    pacemaker_list = np.loadtxt("data/CheXpert/manual_annotations/pacemaker.txt",dtype=str)
     pacemaker_list = ['CheXpert-v1.0-small/'+str(element) for element in pacemaker_list ]
     #Get all images with pacemaker
     pacemaker_data =  dataset['total_df'][dataset['total_df']['Path'].isin(pacemaker_list)]
@@ -124,7 +124,7 @@ def select_no_support_device_images(dataset,criteria=['remove all images with su
     dataset: dict
         A dictionary containing the dataset information
     """
-    nsd_list = np.loadtxt("../data/CheXpert/manual_annotations/no_support_device.txt",dtype=str)
+    nsd_list = np.loadtxt("data/CheXpert/manual_annotations/no_support_device.txt",dtype=str)
     nsd_list = ['CheXpert-v1.0-small/'+str(element) for element in nsd_list ]
     #Get all images with no support device
     nsd_data =  dataset['total_df'][dataset['total_df']['Path'].isin(nsd_list)]
@@ -175,7 +175,7 @@ def select_support_device_images(dataset,criteria=['remove all images without su
     dataset: dict
         A dictionary containing the dataset information
     """
-    sd_list = np.loadtxt("../data/CheXpert/manual_annotations/support_device.txt",dtype=str)
+    sd_list = np.loadtxt("data/CheXpert/manual_annotations/other_support_device.txt",dtype=str)
     sd_list = ['CheXpert-v1.0-small/'+str(element) for element in sd_list ]
     #Get all images with support device
     sd_data =  dataset['total_df'][dataset['total_df']['Path'].isin(sd_list)]

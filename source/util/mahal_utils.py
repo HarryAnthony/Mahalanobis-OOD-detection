@@ -3,7 +3,7 @@ import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
-from util.general_utils import print_progress, variable_use_cuda
+from source.util.general_utils import print_progress, variable_use_cuda
 
 
 def get_class_means(data,RMD=False):

@@ -4,18 +4,18 @@ from types import SimpleNamespace
 import pandas as pd
 import torch
 import torch.backends.cudnn as cudnn
-from util.general_utils import select_cuda_device
-from util.processing_data_utils import get_dataset_config, get_weighted_dataloader, get_dataloader, get_dataset_selections
-from util.training_utils import select_experiment_seed, get_class_weights, record_model, get_network_architecture, initialise_network, get_criterion, get_optimiser_scheduler, set_activation_function
-from util.evaluate_network_utils import load_net
 from sklearn.model_selection import train_test_split
-from util.Select_dataset import Dataset_selection_methods
-from util.Train_DNN import Train_DNN
+from source.util.general_utils import select_cuda_device
+from source.util.processing_data_utils import get_dataset_config, get_weighted_dataloader, get_dataloader, get_dataset_selections
+from source.util.training_utils import select_experiment_seed, get_class_weights, record_model, get_network_architecture, initialise_network, get_criterion, get_optimiser_scheduler, set_activation_function
+from source.util.evaluate_network_utils import load_net
+from source.util.Select_dataset import Dataset_selection_methods
+from source.util.Train_DNN import Train_DNN
 
 
 parser = argparse.ArgumentParser(description='Training a DNN')
 parser.add_argument('--setting', default='setting1', type=str,
-                    help='dataset setting for CheXpert, either setting1 (default) or setting2')
+                    help='dataset setting for CheXpert, either setting1, setting2 or setting3')
 parser.add_argument('--lr', default=1e-3, type=float, help='learning_rate')
 parser.add_argument('--net_type', default='ResNet18',
                     type=str, help='model')
@@ -59,7 +59,7 @@ parser.add_argument('--fold', default=0, type=int,
                     help='The fold to train with when using k-fold cross validation.')
 parser.add_argument('--label_smoothing', default=0.0, type=float,
                     help='Float for label smoothing.')
-parser.add_argument('--save_path', default='../outputs/saved_models', type=str,
+parser.add_argument('--save_path', default='outputs/saved_models', type=str,
                     help='Path to save the model.')
 parser.add_argument('--resume_training', default=False, type=bool,
                     help='Resume training from a saved model.')
@@ -209,7 +209,7 @@ if args.verbose == True:
 Model_details = [0,file_name+'-'+str(seed), seed, cf.df_name,args.setting[-1],args.net_type,args.depth,args.widen_factor,args.dropout,0,0,
                  requires_split,dataset_seed,args.act_func,class_selections,demographic_selections,dataset_selections,train_val_test_split_criteria,num_classes,args.act_func_dropout,
                  args.lr,args.optimiser,args.scheduler,args.max_lr,args.label_smoothing,args.batch_size,cf.initialisation_method,args.save_path,cf.criterion,args.save_model]
-record_model('../outputs/saved_models/model_list.csv',Model_details)
+record_model('outputs/saved_models/model_list.csv',Model_details)
 
 
 #Train the model

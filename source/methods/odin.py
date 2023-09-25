@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import numpy as np 
 from torch.autograd import Variable
-from util.general_utils import print_progress
-from util.evaluate_network_utils import get_softmax_score
+from source.util.general_utils import print_progress
+from source.util.evaluate_network_utils import get_softmax_score
 
 def perturb_x(outputs,inputs,softmax_score,criterion,noiseMagnitude,use_cuda=True,**kwargs):
         """

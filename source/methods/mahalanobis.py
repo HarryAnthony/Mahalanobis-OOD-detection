@@ -1,8 +1,8 @@
 import torch
 import numpy as np
 from torchvision.models.feature_extraction import create_feature_extractor, get_graph_node_names
-from util.general_utils import print_progress
-from util.mahal_utils import  estimate_mean_precision, calc_mahalanobis_score
+from source.util.general_utils import print_progress
+from source.util.mahal_utils import  estimate_mean_precision, calc_mahalanobis_score
 
 
 def evaluate(net, idloader, oodloader, module, OOD_dict={'name': ['Mahalanobis']},**kwargs):

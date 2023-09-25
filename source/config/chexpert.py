@@ -1,8 +1,8 @@
 import torchvision.transforms as T
 import torch
-from dataloaders.chexpert_dataloader import ChexpertSmall, select_pacemaker_images, seperate_patient_IDs, select_no_support_device_images, select_support_device_images
+from source.dataloaders.chexpert_dataloader import ChexpertSmall, select_pacemaker_images, seperate_patient_IDs, select_no_support_device_images, select_support_device_images
 import numpy as np
-from util.general_utils import DefaultDict
+from source.util.general_utils import DefaultDict
 
 Database_class = ChexpertSmall
 
@@ -24,8 +24,8 @@ widen_factor = 10
 image_size = 224
 
 # location of data
-root = '../../data/CheXpert/CheXpert-v1.0-small'
-loader_root = '../../data/CheXpert/'
+root = 'data/CheXpert/CheXpert-v1.0-small'
+loader_root = 'data/CheXpert/'
 df_name = 'cheXpert'
 
 def database_specific_selections(dataset,selections={},**kwargs):

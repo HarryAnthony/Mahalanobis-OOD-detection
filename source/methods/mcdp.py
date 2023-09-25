@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import numpy as np 
 from torch.autograd import Variable
-from util.general_utils import print_progress
-from util.evaluate_network_utils import softmax
+from source.util.general_utils import print_progress
+from source.util.evaluate_network_utils import softmax
 
 def enable_dropout(net, dropout_rate=0.3,two_dim_dropout_rate='same',**kwargs):
     """ 

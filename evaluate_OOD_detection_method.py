@@ -5,14 +5,15 @@ import pandas as pd
 import torch
 import torchvision.transforms as T
 from types import SimpleNamespace
-from util.general_utils import select_cuda_device
-from util.processing_data_utils import get_dataloader, get_weighted_dataloader, get_ood_dataset, get_dataset_selections
-from util.training_utils import get_class_weights
-from util.evaluate_network_utils import load_net, evaluate_ood_detection_method, evaluate_accuracy, ensure_class_overlap, expand_classes
-from make_synthetic_artefacts import RandomErasing_square, RandomErasing_triangle, RandomErasing_polygon, RandomErasing_ring, RandomErasing_text, add_Gaussian_noise, modify_transforms
-from util.Select_dataset import Dataset_selection_methods
 import copy
 import ast
+from source.util.general_utils import select_cuda_device
+from source.util.processing_data_utils import get_dataloader, get_weighted_dataloader, get_ood_dataset, get_dataset_selections
+from source.util.training_utils import get_class_weights
+from source.util.evaluate_network_utils import load_net, evaluate_ood_detection_method, evaluate_accuracy, ensure_class_overlap, expand_classes
+from source.util.Select_dataset import Dataset_selection_methods
+from make_synthetic_artefacts import RandomErasing_square, RandomErasing_triangle, RandomErasing_polygon, RandomErasing_ring, RandomErasing_text, add_Gaussian_noise, modify_transforms
+
 
 parser = argparse.ArgumentParser(description='Evaluate OOD detection method')
 parser.add_argument('--method', '-m', type=str, default='MCP',
@@ -24,13 +25,13 @@ parser.add_argument('--batch_size', default=16, type=int,
 parser.add_argument('--verbose',default=True,type=bool, help='verbose')
 parser.add_argument('--seed', default='82868', type=str,
                     help='Select experiment seed')
-parser.add_argument('--ood_class_selections', '-c_sel', default={'classes_ID': ['Pleural Effusion'], 'classes_OOD': [],'atleast_one_positive_class': False, 'replace_values_dict':{}}, type=dict, #{'classes_ID': ['Fracture'], 'classes_OOD': ['Cardiomegaly','Pneumothorax']}
+parser.add_argument('--ood_class_selections', '-c_sel', default={'classes_ID': ['Fracture'], 'classes_OOD': ['Cardiomegaly','Pneumothorax']}, type=dict, 
                     help='The class selections to be used if the args.ood_setting is not known.')
-parser.add_argument('--ood_demographic_selections', '-d_sel', default={'Sex':['Female','equal']}, type=dict,
+parser.add_argument('--ood_demographic_selections', '-d_sel', default={}, type=dict,
                     help='The demographic selections to be used if the args.ood_setting is not known.')
-parser.add_argument('--ood_dataset_selections', '-dataset_s', default={'support_device_selection':['remove all images without support device']}, type=dict,
+parser.add_argument('--ood_dataset_selections', '-dataset_s', default={'seperate_patient_IDs': True}, type=dict,
                     help='The dataset specific selections to be used if the args.ood_setting is not known (default is for CheXpert).')
-parser.add_argument('--ood_train_val_test_split_criteria', '-split_sel', default={'valSize': 0.0, 'testSize': 1.0}, type=dict,
+parser.add_argument('--ood_train_val_test_split_criteria', '-split_sel', default={'valSize': 0, 'testSize': 1}, type=dict,
                     help='The dataset splitting criteria to be used if the args.ood_setting is not known.')
 #Used for selecting the OOD type
 parser.add_argument('--ood_type', default='different_class',
@@ -208,7 +209,6 @@ if 'synthetic' in args.ood_type:
     transform_kwargs['p'] = 1
 
     kernel_size = tuple(np.array(args.synth_scale)*cf.image_size)
-    #lambda number: round(number) + 1 if round(number) % 2 == 0 else round(number)
 
     # Dictionary to map synth_artefact values to functions
     artefact_to_transform = {
@@ -245,15 +245,15 @@ OOD_loader = get_dataloader(args=SimpleNamespace(**args_dataloader), dataset=df_
 
 #Evaluate accuracy of ID and OOD datasets on the ID classification task
 if args.evaluate_OOD_accuracy == True:
-    evaluate_accuracy(net,OOD_loader,use_cuda=use_cuda,save_results=args.save_results,plot_metric=args.plot_metric,save_dir='../outputs/experiment_outputs',filename='OOD')
+    evaluate_accuracy(net,OOD_loader,use_cuda=use_cuda,save_results=args.save_results,plot_metric=args.plot_metric,save_dir='outputs/experiment_outputs',filename='OOD')
 if args.evaluate_ID_accuracy == True:
-    evaluate_accuracy(net,ID_loader,use_cuda=use_cuda,save_results=args.save_results,plot_metric=args.plot_metric,save_dir='../outputs/experiment_outputs')
+    evaluate_accuracy(net,ID_loader,use_cuda=use_cuda,save_results=args.save_results,plot_metric=args.plot_metric,save_dir='outputs/experiment_outputs')
 
 kwargs_test = {'use_cuda':use_cuda,'verbose':args.verbose}
 
 if args.save_results == True:
     kwargs_test['save_results'] = True
-    kwargs_test['save_dir'] = '../outputs/experiment_outputs'
+    kwargs_test['save_dir'] = 'outputs/experiment_outputs'
     if args.plot_metric == True:
         kwargs_test['plot_metric'] = True
 if args.filename != 'practise':

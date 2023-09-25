@@ -62,13 +62,13 @@ def get_dataset_config(database):
         Whether the dataset requires splitting into train, validation and test sets.
     """
     if database == 'chexpert':
-        from config import chexpert as cf_chexpert
+        from source.config import chexpert as cf_chexpert
         return cf_chexpert, 0
     elif database == 'cifar10':
-        from config import cifar10 as cf_cifar10
+        from source.config import cifar10 as cf_cifar10
         return cf_cifar10, 1
     elif database == 'MIMIC':
-        from config import MIMIC as cf_MIMIC
+        from source.config import MIMIC as cf_MIMIC
         return cf_MIMIC, 0
     else:
         raise Exception('Database configuration unknown.')
@@ -214,21 +214,21 @@ def get_ood_dataset(dataset_name):
         raise ValueError('Dataset not supported. The dataset must be in the list [SHVM, LSUN, cifar10, cifar100, imagenet, tinyimagenet].')
 
     if dataset_name == 'SHVM':   
-        from config import SHVM as cf_SHVM
+        from source.config import SHVM as cf_SHVM
         ood_cf = cf_SHVM
-        ood_dataset = torchvision.datasets.SVHN(root='../data/SHVM', split='test', download=True, transform=ood_cf.transform_test)
+        ood_dataset = torchvision.datasets.SVHN(root='data/SHVM', split='test', download=True, transform=ood_cf.transform_test)
         classes = cf_SHVM.classes
         ood_dataset_split = 0
     elif dataset_name == 'CIFAR10':
-        from config import cifar10 as cf_cifar10
+        from source.config import cifar10 as cf_cifar10
         ood_cf = cf_cifar10
-        ood_dataset = torchvision.datasets.CIFAR10(root='../data/cifar10', train=False, download=True, transform=ood_cf.transform_test)
+        ood_dataset = torchvision.datasets.CIFAR10(root='data/cifar10', train=False, download=True, transform=ood_cf.transform_test)
         classes = cf_cifar10.classes
         ood_dataset_split = 0
     elif dataset_name == 'CIFAR100':
-        from config import cifar100 as cf_CIFAR100
+        from source.config import cifar100 as cf_CIFAR100
         ood_cf = cf_CIFAR100
-        ood_dataset = torchvision.datasets.CIFAR100(root='../data/cifar100', train=False, download=True, transform=ood_cf.transform_test)
+        ood_dataset = torchvision.datasets.CIFAR100(root='data/cifar100', train=False, download=True, transform=ood_cf.transform_test)
         classes = cf_CIFAR100.classes
         ood_dataset_split = 0
     

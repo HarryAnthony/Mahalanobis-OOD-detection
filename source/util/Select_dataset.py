@@ -1,5 +1,5 @@
 import pandas as pd
-from util.processing_data_utils import balance_df, rows_not_in_df
+from source.util.processing_data_utils import balance_df, rows_not_in_df
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import StratifiedKFold, KFold
 import numpy as np

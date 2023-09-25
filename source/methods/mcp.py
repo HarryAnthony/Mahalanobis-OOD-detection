@@ -1,7 +1,7 @@
 import torch
 import numpy as np 
-from util.general_utils import print_progress
-from util.evaluate_network_utils import get_softmax_score
+from source.util.general_utils import print_progress
+from source.util.evaluate_network_utils import get_softmax_score
 
 def evaluate(net, idloader, oodloader, use_cuda=True,verbose=True,**kwargs):
     """

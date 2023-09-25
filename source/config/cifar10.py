@@ -34,10 +34,10 @@ transform_train = T.Compose([
 ])
 
 ID_dataset = torchvision.datasets.CIFAR10(
-    root='../../data/cifar10', train=False, download=True, transform=transform_test)
+    root='data/cifar10', train=False, download=True, transform=transform_test)
 
 train_ID = torchvision.datasets.CIFAR10(
-    root='../../data/cifar10', train=True, download=True, transform=transform_train)
+    root='data/cifar10', train=True, download=True, transform=transform_train)
 
 mean = {
     'setting0': (0.4914, 0.4822, 0.4465),
