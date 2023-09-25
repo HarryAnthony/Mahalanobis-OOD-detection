@@ -156,7 +156,7 @@ It can also be used in conjunction with the function `modify_transforms` in `mak
 #### d. Applying OOD detection
 Given a seed of the experiment, saved in the file `checkpoint/model_list.csv`, OOD detection methods can be applied using the file:
 ```
-python 3 evaluate_OOD_detection_method.py [-h] [--method METHOD] [--cuda_device CUDA_DEVICE] [--batch_size BATCH_SIZE] [--verbose VERBOSE] [--seed SEED] [--ood_class_selections OOD_CLASS_SELECTIONS]
+python3 evaluate_OOD_detection_method.py [-h] [--method METHOD] [--cuda_device CUDA_DEVICE] [--batch_size BATCH_SIZE] [--verbose VERBOSE] [--seed SEED] [--ood_class_selections OOD_CLASS_SELECTIONS]
                [--ood_demographic_selections OOD_DEMOGRAPHIC_SELECTIONS] [--ood_dataset_selections OOD_DATASET_SELECTIONS] [--ood_train_val_test_split_criteria OOD_TRAIN_VAL_TEST_SPLIT_CRITERIA]
                [--ood_type OOD_TYPE] [--ood_dataset OOD_DATASET] [--filename FILENAME] [--temperature TEMPERATURE] [--noiseMagnitude NOISEMAGNITUDE]
                [--MCDP_samples MCDP_SAMPLES] [--deep_ensemble_seed_list DEEP_ENSEMBLE_SEED_LIST] [--save_results SAVE_RESULTS] [--plot_metric PLOT_METRIC] [--return_metrics RETURN_METRICS]
