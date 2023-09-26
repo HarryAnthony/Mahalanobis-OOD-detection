@@ -80,7 +80,7 @@ The system requires the following (latest version tested):
 
 The project can be cloned using
 ```
-$ git clone https://github.com/HarryAnthony/private_mahal_score/
+$ git clone https://github.com/HarryAnthony/Mahalanobis-OOD-detection/
 ```
 
 #### b. Data requirements
