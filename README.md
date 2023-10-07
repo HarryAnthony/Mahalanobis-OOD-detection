@@ -2,11 +2,8 @@
 
 ### :newspaper: Updates
 
-25 September 2023:
-* All code and manual annotations are now fully available!
-  
-9 September 2023:
-* Pre-print of the paper is now available on Arxiv, which can be found here [1].
+7 October 2023:
+* The paper has now been published! Please use the updated citation for this paper!
 
 ### Introduction
 This repository provides several contributions:
@@ -19,7 +16,7 @@ This repository provides several contributions:
 
 Contained within this repository is the code that corresponds with the paper [1]. The work studies OOD detection methods that can be applied on pre-trained deep neural networks which are trained on a specific task of interest (i.e disease classification) - known as _post-hoc_ OOD detection methods. This code also enables analysis into how the performance of Mahalanobis distance-based OOD detection changes based on factors such as where the features are extracted in the network or the form of the OOD artefact. The code can be used to demonstrate the performance of using multiple Mahalanobis distance-based detectors at different depths of the network (multi-branch Mahalanobis), which is studied in paper [1]. I hope this work will inspire future works into OOD detection for medical image analysis. If these ideas, code or dataset helped influence your research, please cite the following paper (bibtex given at bottom of readme).
 
-[1] **Harry Anthony**, Konstantinos Kamnitsas “[On the use of Mahalanobis distance for out-of-distribution detection with neural networks for medical imaging](https://arxiv.org/abs/2309.01488)”, *UNSURE 2023 workshop at MICCAI 2023*.
+[1] **Harry Anthony**, Konstantinos Kamnitsas “[On the use of Mahalanobis distance for out-of-distribution detection with neural networks for medical imaging](https://doi.org/10.1007/978-3-031-44336-7_14)”, In: Uncertainty for Safe Utilization of Machine Learning in Medical Imaging. UNSURE 2023. Lecture Notes in Computer Science, vol 14291. Springer, Cham
 
 
 ### Table of Contents
@@ -189,14 +186,15 @@ I hope this work is useful for further understanding how neural networks behave 
 
 When citing this research, please use the bibTex:
 ```
-@misc{anthony2023use,
-      title={On the use of Mahalanobis distance for out-of-distribution detection with neural networks for medical imaging}, 
-      author={Harry Anthony and Konstantinos Kamnitsas},
-      year={2023},
-      eprint={2309.01488},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
-}
+@incollection{Anthony_2023,
+	doi = {10.1007/978-3-031-44336-7_14},
+	url = {https://doi.org/10.1007%2F978-3-031-44336-7_14},
+	year = 2023,
+	publisher = {Springer Nature Switzerland},
+	pages = {136--146},
+	author = {Harry Anthony and Konstantinos Kamnitsas},
+	title = {On the Use of Mahalanobis Distance for Out-of-distribution Detection with Neural Networks for Medical Imaging},
+	booktitle = {Uncertainty for Safe Utilization of Machine Learning in Medical Imaging}}
 ```
 
 
