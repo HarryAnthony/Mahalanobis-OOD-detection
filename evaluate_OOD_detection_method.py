@@ -25,13 +25,13 @@ parser.add_argument('--batch_size', default=16, type=int,
 parser.add_argument('--verbose',default=True,type=bool, help='verbose')
 parser.add_argument('--seed', default='82868', type=str,
                     help='Select experiment seed')
-parser.add_argument('--ood_class_selections', '-c_sel', default={'classes_ID': ['Fracture'], 'classes_OOD': ['Cardiomegaly','Pneumothorax']}, type=dict, 
+parser.add_argument('--ood_class_selections', '-c_sel', default="{'classes_ID': ['Pleural Effusion'], 'classes_OOD': [],'atleast_one_positive_class': False, 'replace_values_dict':{}}, type=dict, #{'classes_ID': ['Fracture'], 'classes_OOD': ['Cardiomegaly','Pneumothorax']}",
                     help='The class selections to be used if the args.ood_setting is not known.')
-parser.add_argument('--ood_demographic_selections', '-d_sel', default={}, type=dict,
+parser.add_argument('--ood_demographic_selections', '-d_sel', default="{'Sex':['Female','equal']}",
                     help='The demographic selections to be used if the args.ood_setting is not known.')
-parser.add_argument('--ood_dataset_selections', '-dataset_s', default={'seperate_patient_IDs': True}, type=dict,
+parser.add_argument('--ood_dataset_selections', '-dataset_s', default="{'support_device_selection':['remove all images without support device']}",
                     help='The dataset specific selections to be used if the args.ood_setting is not known (default is for CheXpert).')
-parser.add_argument('--ood_train_val_test_split_criteria', '-split_sel', default={'valSize': 0, 'testSize': 1}, type=dict,
+parser.add_argument('--ood_train_val_test_split_criteria', '-split_sel', default="{'valSize': 0.0, 'testSize': 1.0}",
                     help='The dataset splitting criteria to be used if the args.ood_setting is not known.')
 #Used for selecting the OOD type
 parser.add_argument('--ood_type', default='different_class',
@@ -115,6 +115,7 @@ args = parser.parse_args()
 
 #Check that a valid ood_type is selected
 valid_ood_type_options = ['different_dataset','synthetic','different_class']
+args.ood_type = ast.literal_eval(args.ood_type)
 if isinstance(args.ood_type,list):
     for item in args.ood_type:
         if item not in valid_ood_type_options:
@@ -148,6 +149,9 @@ requires_split = net_dict['Requires split']
 batch_size = args.batch_size 
 resize = cf.image_size # image size
 kwargs_method = {}
+
+#Parameter to see if a comparison between ID and OOD classes is required
+expand_classes_required = 1
 
 
 if requires_split == 0: #If dataset does not need to be split
@@ -191,7 +195,11 @@ if 'different_class' in args.ood_type or OOD_dataset_split==1:
                                                  train_val_test_split_criteria=OOD_train_val_test_split_criteria)
     
     if args.evaluate_OOD_accuracy == True: #Ensures there is class overlap in OOD and ID datasets to test accuracy
+        classes_ID = expand_classes(classes_ID, net_dict['class_selections'])
+        classes_OOD = OOD_class_selections['classes_ID']
+        classes_OOD = expand_classes(classes_OOD, OOD_class_selections)
         OOD_dataset = ensure_class_overlap(OOD_dataset,classes_ID,classes_OOD)
+        expand_classes_required = 0
     df_OOD = cf.Database_class(cf.loader_root, OOD_dataset['test_df'], cf.transform_test[args.setting])
 
 if args.ood_type == 'synthetic':
@@ -231,12 +239,14 @@ if 'synthetic' in args.ood_type:
         raise(Exception(f'Artefact {args.synth_artefact} not recognised. Available options are {list(artefact_to_transform.keys())}'))
     
 
-#Expand list of classes to include all classes in the dataset
-classes_ID = expand_classes(classes_ID, net_dict['class_selections'])
-if args.ood_type == 'synthetic':
-    classes_OOD = classes_ID
-else:
-    classes_OOD = expand_classes(classes_OOD, OOD_class_selections)
+if requires_split == 1:
+    if expand_classes_required == 1:
+        #Expand list of classes to include all classes in the dataset
+        classes_ID = expand_classes(classes_ID, net_dict['class_selections'])
+        if args.ood_type == 'synthetic':
+            classes_OOD = classes_ID
+        else:
+            classes_OOD = expand_classes(classes_OOD, OOD_class_selections)
 
 args_dataloader = {'resize': resize, 'batch_size': batch_size, 'shuffle': False, 'pin_memory': use_cuda, 'device_count': device_count}
 ID_loader = get_dataloader(args=SimpleNamespace(**args_dataloader), dataset=df_ID_test)

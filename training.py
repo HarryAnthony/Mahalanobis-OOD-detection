@@ -5,6 +5,7 @@ import pandas as pd
 import torch
 import torch.backends.cudnn as cudnn
 from sklearn.model_selection import train_test_split
+import ast
 from source.util.general_utils import select_cuda_device
 from source.util.processing_data_utils import get_dataset_config, get_weighted_dataloader, get_dataloader, get_dataset_selections
 from source.util.training_utils import select_experiment_seed, get_class_weights, record_model, get_network_architecture, initialise_network, get_criterion, get_optimiser_scheduler, set_activation_function
@@ -47,13 +48,13 @@ parser.add_argument('--max_lr', default=1e-2,
                     help='Maxmimum lr which can be reached when using OneCycleLR.')
 parser.add_argument('--act_func', '-Af', default='ReLU',
                     help='The activation function used for the DNN. (default: ReLU)')
-parser.add_argument('--class_selections', '-c_sel', default={'classes_ID': ['Cardiomegaly'], 'classes_OOD': [], 'atleast_one_positive_class': False,'replace_values_dict':{}}, type=dict,
+parser.add_argument('--class_selections', '-c_sel', default="{'classes_ID': ['Cardiomegaly'], 'classes_OOD': [], 'atleast_one_positive_class': False,'replace_values_dict':{}}",
                     help='The class selections to be used if the args.setting is not known.')
-parser.add_argument('--demographic_selections', '-d_sel', default={}, type=dict,
+parser.add_argument('--demographic_selections', '-d_sel', default="{}",
                     help='The demographic selections to be used if the args.setting is not known.')
-parser.add_argument('--dataset_selections', '-dataset_s', default={}, type=dict,
+parser.add_argument('--dataset_selections', '-dataset_s', default="{}",
                     help='The dataset specific selections to be used if the args.setting is not known (default is for CheXpert).')
-parser.add_argument('--train_val_test_split_criteria', '-split_sel', default={'valSize': 0.2, 'testSize': 0}, type=dict,
+parser.add_argument('--train_val_test_split_criteria', '-split_sel', default="{'valSize': 0.2, 'testSize': 0}",
                     help='The dataset splitting criteria to be used if the args.setting is not known.')
 parser.add_argument('--fold', default=0, type=int,
                     help='The fold to train with when using k-fold cross validation.')
@@ -126,8 +127,8 @@ if load_dataset == 1: #Process the dataset which does not need splitting
 
 else: #Process the dataset which needs splitting
 
-    classes_ID = cf.classes_ID[args.setting] if args.setting in cf.dataset_selection_settings.keys() else args.class_selections['classes_ID']
-    classes_OOD = cf.classes_OOD[args.setting] if args.setting in cf.dataset_selection_settings.keys() else args.class_selections['classes_OOD']
+    classes_ID = cf.classes_ID[args.setting] if args.setting in cf.dataset_selection_settings.keys() else ast.literal_eval(args.class_selections)['classes_ID']
+    classes_OOD = cf.classes_OOD[args.setting] if args.setting in cf.dataset_selection_settings.keys() else ast.literal_eval(args.class_selections)['classes_OOD']
     requires_split = 1
 
     # load dataframe 

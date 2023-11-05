@@ -2,6 +2,9 @@
 
 ### :newspaper: Updates
 
+5 November 2023:
+* Patch 4: Improved compatibility of command-line arguments by formatting dictionary arguments accordingly. Happy coding!  
+
 7 October 2023:
 * The paper has now been published! Please use the updated citation for this paper!
 
