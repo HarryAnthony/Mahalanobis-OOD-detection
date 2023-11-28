@@ -5,7 +5,7 @@ import numpy as np
 from torch.utils.data import DataLoader, WeightedRandomSampler
 import torch
 import torchvision
-import ast
+from source.util.general_utils import try_literal_eval
 
 def balance_df(df,random_state=42):
     """
@@ -114,15 +114,15 @@ def get_dataset_selections(cf,args,dataset_seed,get_ood_data=False):
         train_val_test_split_criteria = dataset_selection_settings[setting]['train_val_test_split_criteria']
     else: #If setting is not known, use the selections in the args instead
         if get_ood_data:
-            class_selections = ast.literal_eval(args.ood_class_selections) if isinstance(args.ood_class_selections,dict) == False else args.ood_class_selections
-            demographic_selections = ast.literal_eval(args.ood_demographic_selections) if isinstance(args.ood_demographic_selections,dict) == False else args.ood_demographic_selections
-            dataset_selections = ast.literal_eval(args.ood_dataset_selections) if isinstance(args.ood_dataset_selections,dict) == False else args.ood_dataset_selections
-            train_val_test_split_criteria = ast.literal_eval(args.ood_train_val_test_split_criteria,dict) if isinstance(args.ood_train_val_test_split_criteria) == False else args.ood_train_val_test_split_criteria
+            class_selections = try_literal_eval(args.ood_class_selections)
+            demographic_selections = try_literal_eval(args.ood_demographic_selections)
+            dataset_selections = try_literal_eval(args.ood_dataset_selections)
+            train_val_test_split_criteria = try_literal_eval(args.ood_train_val_test_split_criteria)
         else:
-            class_selections = ast.literal_eval(args.class_selections) if isinstance(args.class_selections,dict) == False else args.class_selections
-            demographic_selections = ast.literal_eval(args.demographic_selections) if isinstance(args.demographic_selections,dict) == False else args.demographic_selections
-            dataset_selections = ast.literal_eval(args.dataset_selections) if isinstance(args.dataset_selections,dict) == False else args.dataset_selections
-            train_val_test_split_criteria = ast.literal_eval(args.train_val_test_split_criteria) if isinstance(args.train_val_test_split_criteria,dict) == False else args.train_val_test_split_criteria
+            class_selections = try_literal_eval(args.class_selections)
+            demographic_selections = try_literal_eval(args.demographic_selections)
+            dataset_selections = try_literal_eval(args.dataset_selections)
+            train_val_test_split_criteria = try_literal_eval(args.train_val_test_split_criteria) 
 
     train_val_test_split_criteria['dataset_seed'] = float(dataset_seed)
     if 'k_fold_split' in train_val_test_split_criteria.keys():

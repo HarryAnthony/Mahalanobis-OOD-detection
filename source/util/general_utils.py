@@ -3,6 +3,7 @@ Helper functions for general use.
 """
 from torch.autograd import Variable
 import os
+import ast
 
 def select_cuda_device(cuda_device):
     """
@@ -94,6 +95,37 @@ def variable_use_cuda(var,use_cuda):
     if use_cuda:
         var = var.cuda()
     return Variable(var)
+
+
+def try_literal_eval(s):
+    """
+    Attempts to use ast.literal_eval to evaluate the input string. If successful,
+    returns the evaluated result; if a ValueError occurs (malformed literal or
+    unsupported expression), returns the original string.
+
+    Parameters
+    ---------
+    s:  str
+        The string to be evaluated.
+
+    Returns
+    --------
+    result: 
+        The evaluated result if successful, or the original string if an
+        evaluation error occurs.
+
+    Example:
+    >>> input_string = "{'key': 'value'}"
+    >>> result = safe_literal_eval(input_string)
+    >>> print(result)
+    {'key': 'value'}
+    """
+    try:
+        result = ast.literal_eval(s)
+        return result
+    except ValueError:
+        # If ast.literal_eval raises a ValueError, return the original string
+        return s
 
 
 class DefaultDict(dict):

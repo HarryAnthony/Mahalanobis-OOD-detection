@@ -5,8 +5,7 @@ import pandas as pd
 import torch
 import torch.backends.cudnn as cudnn
 from sklearn.model_selection import train_test_split
-import ast
-from source.util.general_utils import select_cuda_device
+from source.util.general_utils import select_cuda_device, try_literal_eval
 from source.util.processing_data_utils import get_dataset_config, get_weighted_dataloader, get_dataloader, get_dataset_selections
 from source.util.training_utils import select_experiment_seed, get_class_weights, record_model, get_network_architecture, initialise_network, get_criterion, get_optimiser_scheduler, set_activation_function
 from source.util.evaluate_network_utils import load_net
@@ -127,8 +126,9 @@ if load_dataset == 1: #Process the dataset which does not need splitting
 
 else: #Process the dataset which needs splitting
 
-    classes_ID = cf.classes_ID[args.setting] if args.setting in cf.dataset_selection_settings.keys() else ast.literal_eval(args.class_selections)['classes_ID']
-    classes_OOD = cf.classes_OOD[args.setting] if args.setting in cf.dataset_selection_settings.keys() else ast.literal_eval(args.class_selections)['classes_OOD']
+    #If known setting is selected, use those clases, otherwise use the classes from arguments
+    classes_ID = cf.classes_ID[args.setting] if args.setting in cf.dataset_selection_settings.keys() else try_literal_eval(args.class_selections)['classes_ID']
+    classes_OOD = cf.classes_OOD[args.setting] if args.setting in cf.dataset_selection_settings.keys() else try_literal_eval(args.class_selections)['classes_OOD']
     requires_split = 1
 
     # load dataframe 
