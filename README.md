@@ -2,11 +2,11 @@
 
 ### :newspaper: Updates
 
-5 November 2023:
-* Patch 4: Improved compatibility of command-line arguments by formatting dictionary arguments accordingly. Happy coding!  
+27 November 2023:
+* Introduced new utility function to safely evaluate strings containing Python literals or container displays. Happy coding!
 
-7 October 2023:
-* The paper has now been published! Please use the updated citation for this paper!
+5 November 2023:
+* Improved compatibility of command-line arguments by formatting dictionary arguments accordingly. 
 
 ### Introduction
 This repository provides several contributions:
@@ -14,7 +14,7 @@ This repository provides several contributions:
 *  Manual annotations for ~50% of the CheXpert database, labelling if a frontal X-ray scan contains a pacemaker or no support device (labels for 100% of the dataset coming soon). I hope this will be a valuable OOD detection benchmark for the community. 
 
 
-![](figures/manual_annotations_jpg.jpg) 
+![](figures/manual_annotations_gif.gif) 
 
 
 Contained within this repository is the code that corresponds with the paper [1]. The work studies OOD detection methods that can be applied on pre-trained deep neural networks which are trained on a specific task of interest (i.e disease classification) - known as _post-hoc_ OOD detection methods. This code also enables analysis into how the performance of Mahalanobis distance-based OOD detection changes based on factors such as where the features are extracted in the network or the form of the OOD artefact. The code can be used to demonstrate the performance of using multiple Mahalanobis distance-based detectors at different depths of the network (multi-branch Mahalanobis), which is studied in paper [1]. I hope this work will inspire future works into OOD detection for medical image analysis. If these ideas, code or dataset helped influence your research, please cite the following paper (bibtex given at bottom of readme).
@@ -95,7 +95,7 @@ Training models using the settings that were used for our project can be achieve
 ```
 python3 training.py [-h] [--setting SETTING] [--lr LR] [--net_type NET_TYPE] [--depth DEPTH] [--widen_factor WIDEN_FACTOR] [--dropout DROPOUT] [--act_func_dropout ACT_FUNC_DROPOUT]
                    [--cuda_device CUDA_DEVICE] [--seed SEED] [--dataset_seed DATASET_SEED] [--batch_size BATCH_SIZE] [--dataset DATASET] [--allow_repeats ALLOW_REPEATS] [--verbose VERBOSE]
-                   [--Optimizer OPTIMIZER] [--Scheduler SCHEDULER] [--save_model SAVE_MODEL] [--max_lr MAX_LR] [--act_func ACT_FUNC] [--class_selections CLASS_SELECTIONS]
+                   [--Optimiser OPTIMISER] [--Scheduler SCHEDULER] [--save_model SAVE_MODEL] [--max_lr MAX_LR] [--act_func ACT_FUNC] [--class_selections CLASS_SELECTIONS]
                    [--demographic_selections DEMOGRAPHIC_SELECTIONS] [--dataset_selections DATASET_SELECTIONS] [--train_val_test_split_criteria TRAIN_VAL_TEST_SPLIT_CRITERIA] [--fold FOLD]
                    [--label_smoothing LABEL_SMOOTHING]
 ```
@@ -120,7 +120,7 @@ These files contain the `Path` to the image, which means selections on the datas
 ```
 pacemaker_list = np.loadtxt("pacemaker.txt",dtype=str)
 pacemaker_list = ['CheXpert-v1.0-small/'+str(element) for element in pacemaker_list ]
-pacemaker_data =  dataset['Path'].isin(pacemaker_list)]
+pacemaker_data =  dataset[dataset['Path'].isin(pacemaker_list)]
 ```
 
 Creating this set of annotations was necessary to create a reliable OOD evaluation because we found the original class *support devices* of CheXpert contained some label noise (as it's made by an NLP model) and contained a heterogeneous set of devices (as opposed to our *pacemaker* class), which complicated analysis of OOD patterns. If you find any issues, please let us know so they can be addressed.

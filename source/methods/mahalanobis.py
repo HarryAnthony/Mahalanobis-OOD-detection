@@ -40,7 +40,6 @@ def evaluate(net, idloader, oodloader, module, OOD_dict={'name': ['Mahalanobis']
         kwargs['feature_combination'] = False
     elif isinstance(module,str) and module=='all':
         model_modules = get_graph_node_names(net)[0]
-        input(model_modules)
         modules = np.arange(0,len(model_modules))
     elif isinstance(module, (list,type(np.array([])),tuple)) == False:
         raise ValueError('module must be an integer, list, tuple, or numpy array, or "all" for all modules')

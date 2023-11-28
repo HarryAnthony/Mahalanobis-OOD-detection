@@ -13,13 +13,12 @@ import torch.backends.cudnn as cudnn
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import csv
-import ast
 from itertools import combinations
 from torch.nn import functional as F
 from torchvision.models import resnet18, vgg11, vgg16_bn, resnet34, resnet50
 from source.models.wide_resnet import Wide_ResNet
 from source.util.training_utils import set_activation_function, add_dropout_network_architechture
-from source.util.general_utils import print_progress
+from source.util.general_utils import print_progress, try_literal_eval
 
 
 def check_net_exists(seed, verbose=True, get_output=False):
@@ -206,7 +205,9 @@ def turn_str_into_dict(string):
         The converted dictionary.
     """
     string = string.replace('np.nan', '\"null\"') #Replace np.nan with null to prevent errors
-    convert_dict = ast.literal_eval(string)
+    string = string.replace('nan', '\"null\"')
+
+    convert_dict = try_literal_eval(string)
 
     if 'replace_values_dict' in convert_dict.keys():
         if 'null' in convert_dict['replace_values_dict'].keys():

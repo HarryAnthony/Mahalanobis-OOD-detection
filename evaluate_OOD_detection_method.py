@@ -6,8 +6,7 @@ import torch
 import torchvision.transforms as T
 from types import SimpleNamespace
 import copy
-import ast
-from source.util.general_utils import select_cuda_device
+from source.util.general_utils import select_cuda_device, try_literal_eval
 from source.util.processing_data_utils import get_dataloader, get_weighted_dataloader, get_ood_dataset, get_dataset_selections
 from source.util.training_utils import get_class_weights
 from source.util.evaluate_network_utils import load_net, evaluate_ood_detection_method, evaluate_accuracy, ensure_class_overlap, expand_classes
@@ -115,7 +114,7 @@ args = parser.parse_args()
 
 #Check that a valid ood_type is selected
 valid_ood_type_options = ['different_dataset','synthetic','different_class']
-args.ood_type = ast.literal_eval(args.ood_type)
+args.ood_type = try_literal_eval(args.ood_type)
 if isinstance(args.ood_type,list):
     for item in args.ood_type:
         if item not in valid_ood_type_options:
@@ -282,7 +281,7 @@ if args.method == 'deepensemble':
     kwargs_test['seed_list'] = args.deep_ensemble_seed_list
 if args.method == 'mahalanobis' or args.method == 'MBM':
     kwargs_test['trainloader'] = trainloader
-    kwargs_test['module'] = ast.literal_eval(args.mahalanobis_module)
+    kwargs_test['module'] = try_literal_eval(args.mahalanobis_module)
     kwargs_test['num_classes'] = num_classes
     kwargs_test['feature_combination'] = True if args.method == 'MBM' or args.mahalanobis_feature_combination == True else False
     kwargs_test['alpha'] = args.mahalanobis_alpha
