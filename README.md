@@ -1,12 +1,10 @@
 # On the use of Mahalanobis distance for out-of-distribution detection with neural networks for medical imaging
 
-### :newspaper: Updates
+<p align="center">
+    <img src="figures/award.jpg" width="600" />
+</p>
+<p align="center"><i>This work was awarded the best-paper award at UNSURE 2023.</i></p>
 
-27 November 2023:
-* Introduced new utility function to safely evaluate strings containing Python literals or container displays. Happy coding!
-
-5 November 2023:
-* Improved compatibility of command-line arguments by formatting dictionary arguments accordingly. 
 
 ### Introduction
 This repository provides several contributions:
@@ -21,6 +19,28 @@ Contained within this repository is the code that corresponds with the paper [1]
 
 [1] **Harry Anthony**, Konstantinos Kamnitsas “[On the use of Mahalanobis distance for out-of-distribution detection with neural networks for medical imaging](https://doi.org/10.1007/978-3-031-44336-7_14)”, In: Uncertainty for Safe Utilization of Machine Learning in Medical Imaging. UNSURE 2023. Lecture Notes in Computer Science, vol 14291. Springer, Cham
 
+
+<p align="center">
+    <a href="https://youtu.be/VxY4IchiaIc?si=zM8FpAL7d9sGHakQ" target="_blank">
+        <img src="figures/YouTube.jpg" width="600" />
+    </a>
+</p>
+<p align="center"><i>Watch my presentation of this project, given at the UNSURE Workshop at MICCAI 2023.</i></p>
+
+
+### :newspaper: Updates
+
+5 December 2024:
+* I've uploaded my presentation for this project — feel free to check it out!
+
+27 November 2023:
+* Introduced new utility function to safely evaluate strings containing Python literals or container displays. Happy coding!
+
+5 November 2023:
+* Improved compatibility of command-line arguments by formatting dictionary arguments accordingly. 
+
+
+=======
 
 ### Table of Contents
 * [1. Method overview](#1-method-overview)
